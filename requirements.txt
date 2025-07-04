@@ -1,0 +1,1 @@
+pip install django djangorestframework mysqlclient django-cors-headers django-environ pip install social-auth-app-django
