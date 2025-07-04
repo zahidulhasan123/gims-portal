@@ -1,0 +1,715 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Select Company</title>
+</head>
+<body>
+    <h2>Select Internship Company</h2>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'select_company' %}">
+        {% csrf_token %}
+        <table border="1" cellpadding="5" cellspacing="0">
+            <tr>
+                <th>Select</th>
+                <th>Company Name</th>
+                <th>Location</th>
+                <th>Seats Available</th>
+            </tr>
+            {% for csi in companies %}
+            <tr>
+                <td><input type="radio" name="company_id" value="{{ csi.company.id }}" required></td>
+                <td>{{ csi.company.name }}</td>
+                <td>{{ csi.company.location }}</td>
+                <td>{{ csi.available_seats }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">No companies available</td></tr>
+            {% endfor %}
+        </table>
+        
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <br>
+    <a href="{% url 'home' %}">Back to Dashboard</a>
+</body>
+</html> {% endcomment %}
+
+
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Select Company</title>
+    <script>
+        function toggleSections() {
+            const choice = document.querySelector('input[name="managed_choice"]:checked').value;
+            document.getElementById('self_managed_section').style.display = (choice === 'yes') ? 'block' : 'none';
+            document.getElementById('company_list_section').style.display = (choice === 'no') ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+    <h2>Select Internship Company</h2>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'select_company' %}">
+        {% csrf_token %}
+
+        <p>Did you manage your own internship company?</p>
+        <label><input type="radio" name="managed_choice" value="yes" onclick="toggleSections()" required> Yes, I managed myself</label><br>
+        <label><input type="radio" name="managed_choice" value="no" onclick="toggleSections()"> No, I want to choose from available companies</label>
+
+        <!-- Self-managed section -->
+        <div id="self_managed_section" style="display: none; margin-top: 20px;">
+            <h3>Provide Your Company Info</h3>
+            <label>Company Name: <input type="text" name="self_managed_company_name" required></label><br><br>
+            <label>Company Details: <textarea name="self_managed_company_details" rows="4" cols="50" required></textarea></label>
+        </div>
+
+        <!-- Available company selection -->
+        <div id="company_list_section" style="display: none; margin-top: 20px;">
+            <h3>Choose from Available Companies</h3>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <tr>
+                    <th>Select</th>
+                    <th>Company Name</th>
+                    <th>Location</th>
+                    <th>Seats Available</th>
+                </tr>
+                {% for csi in companies %}
+                <tr>
+                    <td><input type="radio" name="company_id" value="{{ csi.company.id }}"></td>
+                    <td>{{ csi.company.name }}</td>
+                    <td>{{ csi.company.location }}</td>
+                    <td>{{ csi.available_seats }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4">No companies available</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <br>
+    <a href="{% url 'home' %}">Back to Dashboard</a>
+</body>
+</html> {% endcomment %}
+
+{% comment %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Company</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6ffe6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            width: 500px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .error {
+            color: red;
+        }
+        button {
+            background-color: #d4edda;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        function toggleSections() {
+            const choice = document.querySelector('input[name="managed_choice"]:checked').value;
+            document.getElementById('self_managed_section').style.display = (choice === 'yes') ? 'block' : 'none';
+            document.getElementById('company_list_section').style.display = (choice === 'no') ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Select Internship Company</h2>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="post" action="{% url 'select_company' %}">
+            {% csrf_token %}
+
+            <p>Did you manage your own internship company?</p>
+            <label><input type="radio" name="managed_choice" value="yes" onclick="toggleSections()" required> Yes, I managed myself</label><br>
+            <label><input type="radio" name="managed_choice" value="no" onclick="toggleSections()"> No, I want to choose from available companies</label>
+
+            <!-- Self-managed section -->
+            <div id="self_managed_section" style="display: none; margin-top: 20px;">
+                <h3>Provide Your Company Info</h3>
+                <label>Company Name: <input type="text" name="self_managed_company_name" required></label><br><br>
+                <label>Company Details: <textarea name="self_managed_company_details" rows="4" cols="50" required></textarea></label>
+            </div>
+
+            <!-- Available company selection -->
+            <div id="company_list_section" style="display: none; margin-top: 20px;">
+                <h3>Choose from Available Companies</h3>
+                <table border="1" cellpadding="5" cellspacing="0">
+                    <tr>
+                        <th>Select</th>
+                        <th>Company Name</th>
+                        <th>Location</th>
+                        <th>Seats Available</th>
+                    </tr>
+                    {% for csi in companies %}
+                    <tr>
+                        <td><input type="radio" name="company_id" value="{{ csi.company.id }}"></td>
+                        <td>{{ csi.company.name }}</td>
+                        <td>{{ csi.company.location }}</td>
+                        <td>{{ csi.available_seats }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4">No companies available</td></tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+
+        <br>
+        <a href="{% url 'home' %}">Back to Dashboard</a>
+    </div>
+</body>
+</html> {% endcomment %}
+
+
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Select Company</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6ffe6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            animation: fadeIn 1s ease-in forwards;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(-10px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            width: 600px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        h2, h3 {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 25px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            border: 1.8px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #28a745;
+            outline: none;
+            box-shadow: 0 0 5px #28a745aa;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            font-size: 15px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 15px;
+            transition: background-color 0.25s ease;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+            color: #444;
+        }
+        tr:hover {
+            background-color: #d4edda;
+            cursor: pointer;
+        }
+        input[type="radio"] {
+            transform: scale(1.3);
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function toggleSections() {
+            const choice = document.querySelector('input[name="managed_choice"]:checked').value;
+            document.getElementById('self_managed_section').style.display = (choice === 'yes') ? 'block' : 'none';
+            document.getElementById('company_list_section').style.display = (choice === 'no') ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Select Internship Company</h2>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="post" action="{% url 'select_company' %}">
+            {% csrf_token %}
+
+            <p><strong>Did you manage your own internship company?</strong></p>
+            <label>
+                <input type="radio" name="managed_choice" value="yes" onclick="toggleSections()" required>
+                Yes, I managed myself
+            </label>
+            <label>
+                <input type="radio" name="managed_choice" value="no" onclick="toggleSections()">
+                No, I want to choose from available companies
+            </label>
+
+            <!-- Self-managed section -->
+            <div id="self_managed_section" style="display: none; margin-top: 20px;">
+                <h3>Provide Your Company Info</h3>
+                <label for="self_managed_company_name">Company Name:</label>
+                <input type="text" name="self_managed_company_name" id="self_managed_company_name" required>
+
+                <label for="self_managed_company_details">Company Details:</label>
+                <textarea name="self_managed_company_details" id="self_managed_company_details" rows="4" required></textarea>
+            </div>
+
+            <!-- Available company selection -->
+            <div id="company_list_section" style="display: none; margin-top: 20px;">
+                <h3>Choose from Available Companies</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Company Name</th>
+                            <th>Location</th>
+                            <th>Seats Available</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for csi in companies %}
+                        <tr>
+                            <td><input type="radio" name="company_id" value="{{ csi.company.id }}"></td>
+                            <td>{{ csi.company.name }}</td>
+                            <td>{{ csi.company.location }}</td>
+                            <td>{{ csi.available_seats }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4" style="text-align:center;">No companies available</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <a href="{% url 'home' %}">Back to Dashboard</a>
+    </div>
+</body>
+</html> {% endcomment %}
+
+{% comment %} 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Internship Company</title>
+    <script>
+      function toggleSections() {
+        const selfSection = document.getElementById("self-section");
+        const systemSection = document.getElementById("system-section");
+        const choice = document.querySelector('input[name="selection_type"]:checked');
+
+        if (choice && choice.value === "self") {
+          selfSection.style.display = "block";
+          systemSection.style.display = "none";
+        } else {
+          selfSection.style.display = "none";
+          systemSection.style.display = "block";
+        }
+      }
+    </script>
+</head>
+<body>
+  <h2>Select Internship Company</h2>
+
+  {% if error %}
+    <p style="color:red;">{{ error }}</p>
+  {% endif %}
+
+  <form method="post" action="{% url 'select_company' %}">
+    {% csrf_token %}
+
+    <p><strong>Did you manage your own internship company?</strong></p>
+
+    <label>
+      <input type="radio" name="selection_type" value="self" onclick="toggleSections()" required>
+      Yes, I managed myself
+    </label>
+    <label>
+      <input type="radio" name="selection_type" value="system" onclick="toggleSections()">
+      No, I want to choose from available companies
+    </label>
+
+    <br><br>
+
+    <!-- Self-managed section -->
+    <div id="self-section" style="display:none;">
+      <label>Company Name:</label><br>
+      <input type="text" name="self_company_name"><br><br>
+
+      <label>Company Details:</label><br>
+      <textarea name="self_company_details"></textarea><br><br>
+    </div>
+
+    <!-- System-managed section -->
+    <div id="system-section" style="display:none;">
+      <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+          <th>Select</th>
+          <th>Company Name</th>
+          <th>Location</th>
+          <th>Seats Available</th>
+        </tr>
+        {% for csi in companies %}
+        <tr>
+          <td><input type="radio" name="company_id" value="{{ csi.company.id }}"></td>
+          <td>{{ csi.company.name }}</td>
+          <td>{{ csi.company.location }}</td>
+          <td>{{ csi.available_seats }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No companies available</td></tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <br>
+  <a href="{% url 'home' %}">Back to Dashboard</a>
+</body>
+</html> {% endcomment %}
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Internship Company</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6ffe6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            animation: fadeIn 1s ease-in forwards;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(-10px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            width: 600px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        h2 {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 25px;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        label {
+            font-weight: bold;
+            font-size: 15px;
+            color: #333;
+            cursor: pointer;
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="radio"] {
+            transform: scale(1.3);
+            margin-right: 10px;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1.8px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #28a745;
+            outline: none;
+            box-shadow: 0 0 5px #28a745aa;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 15px;
+            transition: background-color 0.25s ease;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+            color: #444;
+        }
+        tr:hover {
+            background-color: #d4edda;
+            cursor: pointer;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 25px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+      function toggleSections() {
+        const selfSection = document.getElementById("self-section");
+        const systemSection = document.getElementById("system-section");
+        const choice = document.querySelector('input[name="selection_type"]:checked');
+
+        if (choice && choice.value === "self") {
+          selfSection.style.display = "block";
+          systemSection.style.display = "none";
+        } else if (choice && choice.value === "system") {
+          selfSection.style.display = "none";
+          systemSection.style.display = "block";
+        } else {
+          selfSection.style.display = "none";
+          systemSection.style.display = "none";
+        }
+      }
+
+      window.onload = function() {
+        // Hide both sections initially
+        toggleSections();
+      }
+    </script>
+</head>
+<body>
+  <div class="container">
+    <h2>Select Internship Company</h2>
+
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'select_company' %}">
+      {% csrf_token %}
+
+      <p><strong>Did you manage your own internship company?</strong></p>
+
+      <label>
+        <input type="radio" name="selection_type" value="self" onclick="toggleSections()" {% if request.POST.selection_type == 'self' %}checked{% endif %} required>
+        Yes, I managed myself
+      </label>
+      <label>
+        <input type="radio" name="selection_type" value="system" onclick="toggleSections()" {% if request.POST.selection_type == 'system' %}checked{% endif %}>
+        No, I want to choose from available companies
+      </label>
+
+      <br>
+
+      <!-- Self-managed section -->
+      <div id="self-section" style="display:none; margin-top: 20px;">
+        <label for="self_company_name">Company Name:</label>
+        <input type="text" id="self_company_name" name="self_company_name" value="{{ request.POST.self_company_name|default:'' }}">
+
+        <label for="self_company_details" style="margin-top: 15px;">Company Details:</label>
+        <textarea id="self_company_details" name="self_company_details" rows="4">{{ request.POST.self_company_details|default:'' }}</textarea>
+      </div>
+
+      <!-- System-managed section -->
+      <div id="system-section" style="display:none; margin-top: 20px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Company Name</th>
+              <th>Location</th>
+              <th>Seats Available</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for csi in companies %}
+            <tr>
+              <td><input type="radio" name="company_id" value="{{ csi.company.id }}" {% if request.POST.company_id == csi.company.id|stringformat:"s" %}checked{% endif %}></td>
+              <td>{{ csi.company.name }}</td>
+              <td>{{ csi.company.location }}</td>
+              <td>{{ csi.available_seats }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" style="text-align:center;">No companies available</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <a href="{% url 'home' %}">Back to Dashboard</a>
+  </div>
+</body>
+</html>

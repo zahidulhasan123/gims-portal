@@ -1,0 +1,116 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to GIMS</title>
+</head>
+<body>
+  <h1>Welcome to GUB Internship Management System</h1>
+  <p>Please sign in with your Google account to continue.</p>
+
+  <a href="{% url 'social:begin' 'google-oauth2' %}">
+    <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" alt="Sign in with Google" />
+  </a>
+</body>
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to GIMS</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #e6ffe6, #ccffcc);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background-color: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 480px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      width: 120px;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      color: #2e7d32;
+      margin: 10px 0 5px 0;
+    }
+
+    .branding {
+      font-weight: bold;
+      color: #2e7d32;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      color: #444;
+      font-size: 15px;
+      margin-bottom: 30px;
+    }
+
+    .login-btn {
+      display: inline-block;
+      border: none;
+      outline: none;
+      padding: 12px 24px;
+      background-color:rgb(28, 58, 105);
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-btn:hover {
+      background-color: #357ae8;
+    }
+
+    .g-logo {
+      vertical-align: middle;
+      width: 20px;
+      margin-right: 10px;
+    }
+
+    .footer-note {
+      font-size: 13px;
+      color: #888;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="https://green.edu.bd/public/images/primary-logo/GUBLogo.svg" alt="GUB Logo" class="logo">
+    <h1>Welcome to</h1>
+    <div class="branding">GUB Internship Management System (GIMS)</div>
+    <p>Please sign in with your institutional Google account to get started.</p>
+
+    <a class="login-btn" href="{% url 'social:begin' 'google-oauth2' %}">
+      <img class="g-logo" src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo">
+      Sign in with Google
+    </a>
+
+    <div class="footer-note">Powered by GenZsoft • Cloud</div>
+  </div>
+</body>
+</html>
