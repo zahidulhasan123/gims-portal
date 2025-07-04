@@ -1,2 +1,3 @@
 gims/settings.py
+gims/live/settings.py
 db.sqlite3
